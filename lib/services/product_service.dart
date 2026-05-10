@@ -3,21 +3,22 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:provicer_api_project/core/constants/api_constants.dart';
-import 'package:provicer_api_project/models/product..dart';
+import 'package:provicer_api_project/models/product.dart';
 
 class ProductService{
 final String url = ApiConstants.productsEndpoint;
 
 //Get Function:-----------------------------------------------------------
-Future<List<Products>> fetchProducts() async{
- var response = await http.get(Uri.parse(url));
- if(response.statusCode == 200){
- List data = jsonDecode(response.body);
- return data.map((e) => Products.fromJson(e)).toList();
-}
-else{
-  throw Exception("Failed To Load Products");
-}
+Future<List<Products>> fetchProducts() async {
+  final response = await http.get(Uri.parse(url));
+  print(response.statusCode);
+  print(response.body);
+  if (response.statusCode == 200) {
+    final List data = jsonDecode(response.body);
+    return data.map((e) => Products.fromJson(e)).toList();
+  } else {
+    throw Exception("Failed to load products");
+  }
 }
 
 //POST Function:--------------------------------------------------------------------
@@ -28,6 +29,8 @@ Future<Products> createProduct(Products product) async{
     body: jsonEncode(product.toJson())
   );
   if(response.statusCode == 200 || response.statusCode == 201){
+    print(response.statusCode);
+    print(response.body);
  return Products.fromJson(jsonDecode(response.body));
 }
 else{

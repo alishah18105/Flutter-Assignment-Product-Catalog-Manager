@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provicer_api_project/models/product..dart';
+import 'package:provicer_api_project/models/product.dart';
 import 'package:provicer_api_project/services/product_service.dart';
 
 class ProductsProvider extends ChangeNotifier{
@@ -16,7 +16,7 @@ bool get hasError => _errorMessage != null;
 bool get isEmpty => !_isLoading && _products.isEmpty;
 
 //Fetch Api Function:-----------------------------------
-Future<void> fetchApi() async{
+Future<void> fetchProducts() async{
   _isLoading = true;
   notifyListeners();
 
@@ -31,7 +31,7 @@ Future<void> fetchApi() async{
 }
 
 //Post Product Function:---------------------------------
-Future<void> addProducts(Products product) async{
+Future<void> createProduct(Products product) async{
   try{
     final newProduct =await _service.createProduct(product);
     _products.add(newProduct);
@@ -44,7 +44,7 @@ Future<void> addProducts(Products product) async{
 
 }
 //Update Product Function:---------------------------------
-Future<void> updateProducts(Products product) async{
+Future<void> updateProduct(Products product) async{
   try{
     await _service.updateProduct(product);
     final index = _products.indexWhere((p)=> p.id == product.id);
@@ -59,7 +59,7 @@ Future<void> updateProducts(Products product) async{
 }
 
 //DELETE PRODUCT Function:---------------------------------
-Future<void> deleteProducts(String id) async{
+Future<void> deleteProduct(String id) async{
   try{
     await _service.deleteProduct(id);
     _products.removeWhere((p)=> p.id == id);

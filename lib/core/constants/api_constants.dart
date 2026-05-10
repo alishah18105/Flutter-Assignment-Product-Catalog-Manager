@@ -1,4 +1,4 @@
 class ApiConstants{
-  static const String baseUrl = "https://crudcrud.com/api/179501f94ed1405b9ea637b581a37395";
-  static const String productsEndpoint = "${baseUrl}/newproducts";
+  static const String baseUrl = "https://6a006ba42b7ab34960305202.mockapi.io/api";
+  static const String productsEndpoint = "${baseUrl}/products";
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provicer_api_project/model/products.model.dart';
-import 'package:provicer_api_project/providers/product_povider.dart';
+import 'package:provicer_api_project/models/product.dart';
+import 'package:provicer_api_project/providers/product_provider.dart';
+import 'package:provicer_api_project/views/home/widgets/empty_state.dart';
+import 'package:provicer_api_project/views/home/widgets/loading_state.dart';
+import 'package:provicer_api_project/views/home/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,52 +21,28 @@ TextEditingController price = TextEditingController();
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<ProductsProvider>().fetchApi();
+      context.read<ProductsProvider>().fetchProducts();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ProductsProvider>();
-
-    if (provider.isLoading) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    } else {
       return Scaffold(
-        appBar: AppBar(),
-        body: ListView.builder(
-          itemCount: provider.products.length,
-          itemBuilder: (context, index) {
-            final product = provider.products[index];
-            return ListTile(
-              leading: Text("${index + 1}".toString()),
-              title: Text(product.name ?? "Product Name"),
-              subtitle: Text("${product.price ?? 0}".toString()),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      final item = Products(
-                        id: product.id,
-                        name: "Wireless Mouse",
-                        price: 1500,
-                      );
-                      provider.updateProducts(item);
-                    },
-                    icon: Icon(Icons.edit),
-                  ),
-                  SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () {
-                      provider.deleteProducts(product.id!);
-                    },
-                    icon: Icon(Icons.delete),
-                  ),
-                ],
-              ),
-            );
-          },
+        appBar: AppBar(
+          title: Text("Products"),
+        ),
+        body: Consumer<ProductsProvider>(
+          builder: (context,provider,child) {
+            if (provider.isLoading) {
+                return LoadingState();
+                } 
+            else if(provider.isEmpty){
+              return EmptyState();
+            }
+            else{    
+            return ProductCard(provider);
+          }
+          }
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -130,9 +109,9 @@ TextEditingController price = TextEditingController();
                       onPressed: () async{
                         final item = Products(
                           name:  name.text,
-                          price: int.parse(price.text)
+                          price: double.parse(price.text)
                         );
-                        await provider.addProducts(item);
+                        await context.read<ProductsProvider>().createProduct(item);
                         name.clear();
                         price.clear();
                         Navigator.pop(context);
@@ -154,5 +133,5 @@ TextEditingController price = TextEditingController();
         ),
       );
     }
-  }
+
 }
