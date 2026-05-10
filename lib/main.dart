@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provicer_api_project/providers/product_povider.dart';
-import 'package:provicer_api_project/screens/HomeScreen.dart/homeView.dart';
+import 'package:provicer_api_project/providers/product_provider.dart';
+import 'package:provicer_api_project/views/home/home_screen.dart.dart';
 import 'package:provider/provider.dart';
 
 void main(){
@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=> ProductsProvider())
       ],
       child: MaterialApp(
+        title: "Product Catalog",
+        debugShowCheckedModeBanner: false,
         home: HomeView(),
       ),) ;
   }
