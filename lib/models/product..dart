@@ -1,16 +1,21 @@
 class Products{
     String? id;
     String? name;
-    int? price;
+    double? price;
 
     Products({this.id, this.name, this.price});
 
     factory Products.fromJson(Map<String,dynamic> json){
       return Products(
-        id: json["_id"],
-        name: json["name"],
-        price: json["price"]
+        id: json["_id"] as String?,
+        name: json["name"] as String,
+        price: (json["price"] as num).toDouble(),
       );
     }
+
+    Map<String, dynamic> toJson() =>{
+      "name" : name,
+      "price" : price
+    };
 
 }
