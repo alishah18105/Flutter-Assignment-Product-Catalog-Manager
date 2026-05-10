@@ -2,13 +2,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:provicer_api_project/core/constants/api_constants.dart';
 import 'package:provicer_api_project/models/product..dart';
 
-class Api_Services{
-final String url = "https://crudcrud.com/api/dc6830c7ec65445baf6a07e53c1ba70f/products";
+class ProductService{
+final String url = ApiConstants.productsEndpoint;
 
 //Get Function:-----------------------------------------------------------
-Future<List<Products>> fetchApi() async{
+Future<List<Products>> fetchProducts() async{
  var response = await http.get(Uri.parse(url));
  if(response.statusCode == 200){
  List data = jsonDecode(response.body);
@@ -20,15 +21,11 @@ else{
 }
 
 //POST Function:--------------------------------------------------------------------
-Future<Products> addProducts(Products product) async{
+Future<Products> createProduct(Products product) async{
   var response = await http.post(
     Uri.parse(url),
     headers: {"Content-Type": "application/json"},
-    body: jsonEncode({
-      "id" : product.id,
-      "name": product.name,
-      "price": product.price
-    })
+    body: jsonEncode(product.toJson())
   );
   if(response.statusCode == 200 || response.statusCode == 201){
  return Products.fromJson(jsonDecode(response.body));
@@ -40,16 +37,11 @@ else{
 }
 
 //PUT Function:-----------------------------------------
-Future<void> updateProducts(Products product) async{
+Future<void> updateProduct(Products product) async{
   var response = await http.put(
     Uri.parse("$url/${product.id}"),
     headers: {"Content-Type" : "application/json"},
-    body: jsonEncode({
-      "id" : product.id,
-      "name": product.name,
-      "price": product.price
-    }
-    )
+    body: jsonEncode(product.toJson())
   );
 if(response.statusCode != 200){
   throw Exception("Failed to update product");
