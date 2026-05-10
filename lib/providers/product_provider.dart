@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provicer_api_project/model/products.model.dart';
-import 'package:provicer_api_project/services/products_services.dart';
+import 'package:provicer_api_project/models/product..dart';
+import 'package:provicer_api_project/services/product_service.dart';
 
 class ProductsProvider extends ChangeNotifier{
-Api_Services service = Api_Services();
+final ProductService _service = ProductService();
 
 bool _isLoading = false;
 List<Products> _products = [];
+String? _errorMessage;
 
 bool get isLoading => _isLoading;
 List<Products> get products => _products;
+String? get errorMessage => _errorMessage;
+bool get hasError => _errorMessage != null;
+bool get isEmpty => !_isLoading && _products.isEmpty;
 
 //Fetch Api Function:-----------------------------------
 Future<void> fetchApi() async{
@@ -17,7 +21,7 @@ Future<void> fetchApi() async{
   notifyListeners();
 
   try{
-    _products = await service.fetchApi();
+    _products = await _service.fetchProducts();
   }
   catch(e){
     print(e);
@@ -29,7 +33,7 @@ Future<void> fetchApi() async{
 //Post Product Function:---------------------------------
 Future<void> addProducts(Products product) async{
   try{
-    final newProduct =await service.addProducts(product);
+    final newProduct =await _service.createProduct(product);
     _products.add(newProduct);
       notifyListeners();
 
@@ -42,7 +46,7 @@ Future<void> addProducts(Products product) async{
 //Update Product Function:---------------------------------
 Future<void> updateProducts(Products product) async{
   try{
-    await service.updateProducts(product);
+    await _service.updateProduct(product);
     final index = _products.indexWhere((p)=> p.id == product.id);
     if(index != -1){
       _products[index] = product;
@@ -57,7 +61,7 @@ Future<void> updateProducts(Products product) async{
 //DELETE PRODUCT Function:---------------------------------
 Future<void> deleteProducts(String id) async{
   try{
-    await service.deleteProduct(id);
+    await _service.deleteProduct(id);
     _products.removeWhere((p)=> p.id == id);
     notifyListeners();
   }
