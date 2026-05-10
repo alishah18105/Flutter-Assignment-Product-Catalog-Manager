@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:provicer_api_project/model/products.model.dart';
+import 'package:provicer_api_project/models/product..dart';
 
 class Api_Services{
 final String url = "https://crudcrud.com/api/dc6830c7ec65445baf6a07e53c1ba70f/products";
