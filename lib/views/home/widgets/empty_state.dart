@@ -30,7 +30,7 @@ class EmptyState extends StatelessWidget {
           const SizedBox(height: 20),
       
           const Text(
-            "No Products Found",
+            "No Product Found",
             textAlign: TextAlign.center, 
             style: TextStyle(
               fontSize: 22,
