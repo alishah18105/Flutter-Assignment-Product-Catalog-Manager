@@ -28,65 +28,58 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
       return Scaffold(
         backgroundColor: AppColors.screenBackground,
-        appBar: AppBar(
-          leading: Icon(Icons.menu),
-          title: Center(
-            child: Row(
+        body: Padding(
+          padding: const EdgeInsets.only(top: 25.0, left: 16, right: 16, bottom: 50),
+          child: Column(
+            children: [
+              Row(
               children: [
-                Text("Products", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25, color: AppColors.screenTitle),),
-                Icon(Icons.shopify, size: 30, color: AppColors.screenTitle,)
+                Text("Products", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30, color: AppColors.screenTitle),),
+                Icon(Icons.shopify, size: 30, color: AppColors.blackColor,),
               ],
             ),
+            SizedBox(height: 10,),
+              Consumer<ProductsProvider>(
+                builder: (context,provider,child) {
+                  if (provider.isLoading) {
+                      return LoadingState();
+                      } 
+                  else if(provider.isEmpty){
+                    return EmptyState();
+                  }
+                  else{    
+                  return Expanded(child: ProductCard(provider));
+                }
+                }
+              ),
+            ],
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Consumer<ProductsProvider>(
-            builder: (context,provider,child) {
-              if (provider.isLoading) {
-                  return LoadingState();
-                  } 
-              else if(provider.isEmpty){
-                return EmptyState();
-              }
-              else{    
-              return ProductCard(provider);
-            }
-            }
-          ),
-        ),
-        floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerDocked,
-
+        
+floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   floatingActionButton: Padding(
-    padding: const EdgeInsets.only(bottom: 16.0),
-    child: Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-    
-        border: Border.all(
-          color: AppColors.fabBackground,
-          width: 1.5,
+    padding: const EdgeInsets.only(bottom: 10.0),
+    child: FloatingActionButton.extended(
+    backgroundColor: AppColors.fabBackground,
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductFormScreen(),
         ),
-    
+      );
+    },
+    icon: Icon(
+      Icons.add,
+      color: AppColors.whiteColor,
+    ),
+    label: Text(
+      "ADD PRODUCT",
+      style: TextStyle(
+        color: AppColors.whiteColor,
+        fontWeight: FontWeight.bold,
       ),
-    
-      child: FloatingActionButton(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-    
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductFormScreen()));
-        },
-    
-        child: Icon(
-          Icons.add,
-          size: 34,
-          color: AppColors.fabBackground,
-        ),
-      ),
+    ),
     ),
   ),
       );

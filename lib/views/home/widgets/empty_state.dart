@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provicer_api_project/core/theme/app_themes.dart';
 
 class EmptyState extends StatelessWidget {
   const EmptyState({super.key});
@@ -7,31 +8,43 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-
-          Icon(
-            Icons.inventory_2_outlined,
-            size: 80,
-            color: Colors.grey,
-          ),
-
-          SizedBox(height: 20),
-
-          Text(
-            "No Products Found",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+       
+        children: [
+          SizedBox(height: 50),
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: AppColors.textFieldBackground,
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.inventory_2_outlined,
+                size: 80,
+                color: Colors.grey,
+              ),
             ),
           ),
-
-          SizedBox(height: 10),
-
-          Text(
-            "Add products to see them here",
+      
+          const SizedBox(height: 20),
+      
+          const Text(
+            "No Products Found",
+            textAlign: TextAlign.center, 
             style: TextStyle(
-              color: Colors.grey,
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+      
+          const SizedBox(height: 10),
+      
+          Text(
+            "Your workplace is currently a clean slate. Start by adding your first product to the inventory.",
+            textAlign: TextAlign.center, 
+            style: TextStyle(
+              color: AppColors.hintText,
             ),
           ),
         ],

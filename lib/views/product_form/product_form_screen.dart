@@ -63,102 +63,205 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return Scaffold(
       backgroundColor: AppColors.screenBackground,
       appBar: AppBar(
+        backgroundColor: AppColors.screenBackground,
         title: Text(
           _isEditing ? "Edit Product" : "Add Product",
           style: TextStyle(
             fontWeight: FontWeight.w900,
             fontSize: 25,
-            color: AppColors.screenTitle,
+            color: AppColors.fabBackground,
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
-        child: Card(
-          elevation: 5,
-          color: AppColors.lavenderTile,
-          shadowColor: Colors.grey,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 20),
-                Text(
-                  _isEditing
-                      ? "Update Existing Product"
-                      : "Create New Product",
-                  style: TextStyle(
-                    color: AppColors.alternateTitle,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    "CATALOG MANAGEMENT",
+                    style: TextStyle(fontSize: 15, color: AppColors.tileTitle),
                   ),
+                  Text(
+                    _isEditing ? "Modify Product" : "Define New Product",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 30,
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Card(
+                elevation: 5,
+                color: AppColors.whiteColor,
+                shadowColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                SizedBox(height: 10),
-                Divider(color: AppColors.alternateTitle, thickness: 5),
-                SizedBox(height: 30),
-                Form(
-                  key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextFormField(
-                        controller: _nameCtrl,
-                        decoration: InputDecoration(
-                          label: Text("Name"),
-                          filled: true,
-                          fillColor: AppColors.textFieldBackground,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              color: AppColors.textFieldBorder,
+                      SizedBox(height: 20),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Product Name",
+                              style: TextStyle(
+                                color: AppColors.fabBackground,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              controller: _nameCtrl,
+                              decoration: InputDecoration(
+                                filled: true,
+        
+                                fillColor: AppColors.textFieldBackground,
+                                hint: Text(
+                                  "eg: Enterprise Cloud Module",
+                                  style: TextStyle(color: AppColors.hintText),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Price",
+                              style: TextStyle(
+                                color: AppColors.fabBackground,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              controller: _priceCtrl,
+                              keyboardType: TextInputType.number,
+        
+                              decoration: InputDecoration(
+                                hint: Text(
+                                  "0.00",
+                                  style: TextStyle(color: AppColors.hintText),
+                                ),
+                                label: Text("Price"),
+                                filled: true,
+                                fillColor: AppColors.textFieldBackground,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                prefixIcon: Icon(Icons.monetization_on_outlined),
+                              ),
+                            ),
+                            SizedBox(height: 30),
+        
+                            if (!_isEditing)
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.textFieldBackground,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.info_outline,
+                                      color: AppColors.fabBackground,
+                                    ),
+        
+                                    const SizedBox(width: 12),
+        
+                                    Expanded(
+                                      child: Text(
+                                        "Ensure product pricing aligns with current regional tax regulations and platform fees.",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.hintText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _isSaving ? null : _save,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.fabBackground,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 35,
+                            vertical: 15,
                           ),
-                          prefixIcon: Icon(Icons.shopping_bag_outlined),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.add, color: AppColors.whiteColor),
+                            Text(
+                              _isEditing ? "Save Changes" : "Save Product",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 20),
-                      TextFormField(
-                        controller: _priceCtrl,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          label: Text("Price"),
-                          filled: true,
-                          fillColor: AppColors.textFieldBackground,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              color: AppColors.textFieldBorder,
-                            ),
+                      ElevatedButton(
+                        onPressed: _isSaving ? null : _save,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFF8F8F8),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 65,
+                            vertical: 15,
                           ),
-                          prefixIcon: Icon(Icons.monetization_on_outlined),
                         ),
+                        child: Text("Cancel",style: TextStyle(
+                          color: AppColors.fabBackground,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16
+                        ),)
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 20,)
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: _isSaving ? null : _save,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
-                  ),
-                  child: Text(
-                    _isEditing ? "Save Changes" : "Save Product",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                ),
-                SizedBox(height: 30),
-              ],
+              ),
             ),
-          ),
+            SizedBox(height: 30,)
+          ],
         ),
       ),
     );
